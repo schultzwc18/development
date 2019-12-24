@@ -17,8 +17,9 @@ def roll(times=1, sides=20, modifier=0, type='add'):
 
     if type == 'add':
         total = get_roll_total(rolls)
-        print(total)
+        return total
     else:
-        print(rolls)
+        return rolls
 
-roll(2, 10, 7, 'add')
+if __name__ == "__main__":
+    roll(2, 10, 7, 'add')
