@@ -9,6 +9,7 @@ def roll_attack(attacks=1, attack_modifier=0, attack_advantage=False, damage_die
     
     for x in range(attacks):
         # (hit, damage)
+        # TO DO change to (pre-mod hit, hit, damage)
         hit = roll_hit(attack_modifier, attack_advantage)
         damage = roll_damage(damage_rolls_number, damage_die_sides, damage_modifier)
         attack_tuple = "(%d, %d)" % (hit, damage)
@@ -17,29 +18,29 @@ def roll_attack(attacks=1, attack_modifier=0, attack_advantage=False, damage_die
     return attack_rolls
 
 def roll_save(modifier=0, advantage=False):
-    first_hit = roll(1, 20, modifier, 'add')
+    first_hit = roll(1, 20, modifier)
     if advantage:
-        second_hit = roll(1, 20, modifier, 'add')
+        second_hit = roll(1, 20, modifier)
     else:
         second_hit = -500
     return max(first_hit, second_hit)
 
 def roll_damage(times=1, sides=4, modifier=0):
-    dmg = roll(times, sides, modifier, 'add')
+    dmg = roll(times, sides, modifier)
     return dmg
 
 def roll_hit(modifier=0, advantage=False):
-    first_hit = roll(1, 20, modifier, 'add')
+    first_hit = roll(1, 20, modifier)
     if advantage:
-        second_hit = roll(1, 20, modifier, 'add')
+        second_hit = roll(1, 20, modifier)
     else:
         second_hit = -500
     return max(first_hit, second_hit)
 
 def roll_skill(modifier=0, advantage=False):
-    first_hit = roll(1, 20, modifier, 'add')
+    first_hit = roll(1, 20, modifier)
     if advantage:
-        second_hit = roll(1, 20, modifier, 'add')
+        second_hit = roll(1, 20, modifier)
     else:
         second_hit = -500
     return max(first_hit, second_hit)
