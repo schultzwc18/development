@@ -14,7 +14,7 @@ def perform_save(modifier=0, advantage=False):
         second_roll = -500
     save_roll = max(first_roll, second_roll)
     modified_save = save_roll + modifier
-    return modified_save
+    return "(%d, %d)" % (save_roll, modified_save)
 
 def perform_skill_check(modifier=0, advantage=False):
     first_roll = roll(1, 20)
