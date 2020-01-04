@@ -1,4 +1,3 @@
-import character_template
 import character_actions
 
 def character_stats(stat_name):
