@@ -1,4 +1,23 @@
-import character_actions
+import random
+
+def get_roll(sides=20):
+    roll = random.randint(1, sides)
+    return roll
+
+
+def get_roll_total(rolls = [1]):
+    roll_total = sum(rolls)
+    return roll_total
+
+
+def roll(times=1, sides=20):
+    rolls = []
+    for x in range(times):
+        current_roll = get_roll(sides)
+        rolls.append(current_roll)
+
+    total_roll = get_roll_total(rolls)
+    return total_roll
 
 def character_stats(stat_name):
     stats = {
@@ -132,62 +151,40 @@ def get_skill_stat(skill_name):
 
     return switcher.get(skill_name, 'strength')
 
+def roll_check(modifier=0, advantage=1):
+    first_roll = roll(1, 20)
+    second_roll = roll(1, 20)
 
-
-def roll_saving_throw(stat_name='strength', advantage=False):
-    stat_value = character_stats(stat_name)
-    saving_throw_proficiency = character_saving_throws(stat_name)
-    level = character_stats('level')
-    level_proficiency = character_template.get_proficiency_bonus(level)
-    stat_modifier = character_template.get_stat_modifier(stat_value)
-
-    saving_throw_modifier = stat_modifier + int(level_proficiency * saving_throw_proficiency)
-    save_roll = character_actions.perform_save(saving_throw_modifier, advantage)
-    print(save_roll)
-
-def roll_skill_check(skill_name='athletics', advantage=False):
-    skill_stat = character_template.get_skill_stat(skill_name)
-    stat_value = character_stats(skill_stat)
-    stat_modifier = character_template.get_stat_modifier(stat_value)
-    skill_proficiency = character_skills(skill_name)
-    level = character_stats('level')
-    level_proficiency = character_template.get_proficiency_bonus(level)
-
-    skill_check_modifier = stat_modifier + int(level_proficiency * skill_proficiency)
-    skill_roll = character_actions.perform_skill_check(skill_check_modifier, advantage)
-    print(skill_roll)
-
-def roll_damage(damage_stat='strength', damage_dice='1d4', additional_modifiers=0):
-    stat_value = character_stats(damage_stat)
-
-    if damage_stat == 'magic':
-        stat_modifier = 0
+    if advantage == 0:
+        hit = min(first_roll, second_roll)
+    elif advantage == 2:
+        hit = max(first_roll, second_roll)
     else:
-        stat_modifier = character_template.get_stat_modifier(stat_value)
+        hit = first_hit
 
-    damage_modifier = stat_modifier + additional_modifiers
+    modified_hit = hit + modifier
+    hit_tuple = (hit, modified_hit)
+    return hit_tuple
 
-    damage = character_actions.get_damage(damage_dice, damage_modifier)
-    half_damage = damage // 2
-    print("(%d, %d)" % (damage, half_damage))
+def roll_damage(damage_dice='1d4', modifier=0):
+    damage_type = damage_dice.split('d')
+    damage_rolls = int(damage_type[0])
+    damage_sides = int(damage_type[1])
+    damage = roll(damage_rolls, damage_dice)
+    modified_damage = damage + modifier
+    return modified_damage
 
 
-def roll_attack(times=1, hit_stat='strength', damage_dice='1d4', additional_damage_modifiers=0, hit_advantage=False):
-    stat_value = character_stats(hit_stat)
-    stat_modifier = character_template.get_stat_modifier(stat_value)
-    level = character_stats('level')
-    level_proficiency = character_template.get_proficiency_bonus(level)
-
-    hit_modifier = stat_modifier + level_proficiency
-    damage_modifier = stat_modifier + additional_damage_modifiers
+def roll_attack(times=1, attack_modifier=0, attack_advantage=1, damage_dice='1d4', damage_modifier=0):
+    attacks = []
 
     for x in range(times):
-        hit_roll = character_actions.perform_attack(hit_modifier, hit_advantage, damage_dice, damage_modifier)
-        print(hit_roll)
+        current_attack = roll_check(attack_modifier, attack_advantage)
+        current_damage = roll_damage(damage_dice, damage_modifier)
+        attack_and_damage = "(%d, %d, %d)" %d (current_attack[0], current_attack[1], current_damage)
+        attacks.append(attack_and_damage)
 
-def roll_spell(hit_stat='wisdom', damage_dice='1d4', additional_damage_modifiers=0):
-    print('hello world')
-
+    return attacks
 
 if __name__ == "__main__":
-    roll_attack(1, 'strength', '1d8', 0, False)
+    print('test cases here')
